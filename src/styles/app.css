@@ -2,17 +2,27 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
   overflow: hidden;
+
+  background: linear-gradient(
+    135deg,
+    #0f172a,
+    #1e293b
+  );
 }
 
 .app-container {
   min-height: 100vh;
+
   position: relative;
+
   display: flex;
+
   justify-content: center;
+
   align-items: center;
 }
 
-/* VIDEO BACKGROUND */
+/* VIDEO */
 
 .background-video {
   position: fixed;
@@ -28,10 +38,11 @@ body {
   z-index: 0;
 }
 
-/* DARK OVERLAY */
+/* OVERLAY */
 
 .background-overlay {
   position: absolute;
+
   inset: 0;
 
   background: rgba(0, 0, 0, 0.45);
@@ -39,7 +50,7 @@ body {
   z-index: 1;
 }
 
-/* GLASS CARD */
+/* CARD */
 
 .timer-card {
   position: relative;
@@ -70,17 +81,7 @@ body {
 
   box-shadow: 0 8px 32px
     rgba(0, 0, 0, 0.35);
-
-  transition: 0.4s ease;
 }
-
-.timer-card h1 {
-  font-size: 34px;
-
-  margin-bottom: 20px;
-}
-
-/* TIMER */
 
 .timer-text {
   font-size: 82px;
@@ -88,8 +89,6 @@ body {
   font-weight: bold;
 
   margin: 25px 0;
-
-  letter-spacing: 2px;
 }
 
 /* BUTTONS */
@@ -128,37 +127,63 @@ body {
   transform: scale(1.05);
 }
 
-.button-group button:active {
-  transform: scale(0.95);
-}
-
-/* START */
-
 .button-group button:nth-child(1) {
-  background: linear-gradient(
-    135deg,
-    #22c55e,
-    #15803d
-  );
+  background: #22c55e;
 }
-
-/* STOP */
 
 .button-group button:nth-child(2) {
-  background: linear-gradient(
-    135deg,
-    #ef4444,
-    #b91c1c
-  );
+  background: #ef4444;
 }
 
-/* RESET */
-
 .button-group button:nth-child(3) {
-  background: linear-gradient(
-    135deg,
-    #3b82f6,
-    #1d4ed8
+  background: #3b82f6;
+}
+
+/* THEME */
+
+.theme-selector {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  flex-wrap: wrap;
+
+  margin-top: 25px;
+}
+
+.theme-selector button {
+  border: none;
+
+  padding: 10px 14px;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  background: rgba(
+    255,
+    255,
+    255,
+    0.15
+  );
+
+  color: white;
+
+  font-weight: bold;
+
+  transition: 0.3s ease;
+}
+
+.theme-selector button:hover {
+  transform: scale(1.05);
+
+  background: rgba(
+    255,
+    255,
+    255,
+    0.25
   );
 }
 
@@ -199,42 +224,19 @@ body {
   );
 
   color: white;
-
-  font-size: 16px;
-
-  transition: 0.3s ease;
 }
 
-.settings input:focus {
-  transform: scale(1.02);
-
-  background: rgba(
-    255,
-    255,
-    255,
-    0.2
-  );
-}
-
-/* VOLUME CONTROL */
+/* VOLUME */
 
 .volume-control {
-  margin-top: 25px;
-}
-
-.volume-control label {
-  display: block;
-
-  margin-bottom: 10px;
-
-  font-weight: bold;
+  margin-top: 20px;
 }
 
 .volume-control input {
   width: 100%;
 }
 
-/* RESPONSIVE */
+/* MOBILE */
 
 @media (max-width: 480px) {
   .timer-card {
@@ -246,4 +248,143 @@ body {
   .timer-text {
     font-size: 60px;
   }
+}
+
+.exit-theme-button {
+  position: fixed;
+
+  top: 20px;
+  right: 20px;
+
+  width: 45px;
+  height: 45px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  z-index: 5;
+
+  font-size: 20px;
+
+  color: white;
+
+  background: rgba(
+    0,
+    0,
+    0,
+    0.45
+  );
+
+  backdrop-filter: blur(10px);
+
+  transition: 0.3s ease;
+}
+
+.exit-theme-button:hover {
+  transform: scale(1.1);
+
+  background: rgba(
+    0,
+    0,
+    0,
+    0.65
+  );
+}
+
+.active-theme {
+  background: rgba(
+    255,
+    255,
+    255,
+    0.35
+  ) !important;
+
+  transform: scale(1.08);
+
+  box-shadow: 0 0 15px
+    rgba(255, 255, 255, 0.35);
+}
+
+/* SESSION INFO */
+
+.session-info {
+  margin-bottom: 10px;
+}
+
+.session-info h2 {
+  font-size: 30px;
+
+  margin-bottom: 8px;
+}
+
+.session-info p {
+  opacity: 0.85;
+
+  font-size: 15px;
+}
+
+/* SETTINGS DROPDOWN */
+
+.settings-dropdown {
+  margin-top: 25px;
+
+  text-align: left;
+}
+
+.settings-dropdown summary {
+  cursor: pointer;
+
+  padding: 12px 15px;
+
+  border-radius: 12px;
+
+  background: rgba(
+    255,
+    255,
+    255,
+    0.12
+  );
+
+  font-weight: bold;
+
+  user-select: none;
+
+  transition: 0.3s ease;
+}
+
+.settings-dropdown summary:hover {
+  background: rgba(
+    255,
+    255,
+    255,
+    0.2
+  );
+}
+
+/* TIMER CARD IMPROVEMENTS */
+
+.timer-card {
+  max-height: 90vh;
+
+  overflow-y: auto;
+}
+
+/* SCROLLBAR */
+
+.timer-card::-webkit-scrollbar {
+  width: 6px;
+}
+
+.timer-card::-webkit-scrollbar-thumb {
+  background: rgba(
+    255,
+    255,
+    255,
+    0.25
+  );
+
+  border-radius: 20px;
 }

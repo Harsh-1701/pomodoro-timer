@@ -3,25 +3,14 @@ export default function SessionInfo({
   completedWorkSessions,
 }) {
   return (
-    <>
-      <h2
-  style={{
-    fontSize: "32px",
-    marginBottom: "10px",
-  }}
->
-  {sessionType}
-</h2>
+    <div className="session-info">
+      <h2>{sessionType}</h2>
 
       <p>
-        Completed Sessions:
+        Sessions Completed:
         {" "}
         {completedWorkSessions}
       </p>
-    </>
+    </div>
   );
 }
-
-<p style={{ opacity: 0.8 }}>
-  Stay focused. One session at a time.
-</p>

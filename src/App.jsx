@@ -47,6 +47,9 @@ export default function App() {
   const [volume, setVolume] =
     useState(0.5);
 
+  const [theme, setTheme] =
+    useState("none");
+
   const timerRef = useRef(null);
 
   const formatTime = (seconds) => {
@@ -127,11 +130,22 @@ export default function App() {
 
   return (
     <div className="app-container">
-      <BackgroundVideo />
+      {theme !== "none" && (
+        <>
+          <BackgroundVideo
+            theme={theme}
+          />
 
-      <AmbientSound volume={volume} />
+          <AmbientSound
+            volume={volume}
+            theme={theme}
+            isRunning={isRunning}
+          />
 
-      <div className="background-overlay"></div>
+          <div className="background-overlay"></div>
+
+        </>
+      )}
 
       <div className="timer-card">
         <h1>Pomodoro Timer</h1>
@@ -154,43 +168,107 @@ export default function App() {
           resetTimer={resetTimer}
         />
 
-        <div className="volume-control">
-          <label>
-            Ambient Volume
-          </label>
+        <div className="theme-selector">
+  <button
+    className={
+      theme === "none"
+        ? "active-theme"
+        : ""
+    }
+    onClick={() =>
+      setTheme("none")
+    }
+  >
+    🌙 Calm
+  </button>
 
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={volume}
-            onChange={(e) =>
-              setVolume(
-                Number(e.target.value)
-              )
-            }
-          />
-        </div>
+  <button
+    className={
+      theme === "rain"
+        ? "active-theme"
+        : ""
+    }
+    onClick={() =>
+      setTheme("rain")
+    }
+  >
+    🌧 Rain
+  </button>
 
-        <Settings
-          workMinutes={workMinutes}
-          shortBreakMinutes={
-            shortBreakMinutes
-          }
-          longBreakMinutes={
-            longBreakMinutes
-          }
-          setWorkMinutes={
-            setWorkMinutes
-          }
-          setShortBreakMinutes={
-            setShortBreakMinutes
-          }
-          setLongBreakMinutes={
-            setLongBreakMinutes
-          }
-        />
+  <button
+    className={
+      theme === "fire"
+        ? "active-theme"
+        : ""
+    }
+    onClick={() =>
+      setTheme("fire")
+    }
+  >
+    🔥 Fire
+  </button>
+
+  <button
+    className={
+      theme === "ocean"
+        ? "active-theme"
+        : ""
+    }
+    onClick={() =>
+      setTheme("ocean")
+    }
+  >
+    🌊 Ocean
+  </button>
+</div>
+
+        {theme !== "none" && (
+          <div className="volume-control">
+            <label>
+              Ambient Volume
+            </label>
+
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={volume}
+              onChange={(e) =>
+                setVolume(
+                  Number(
+                    e.target.value
+                  )
+                )
+              }
+            />
+          </div>
+        )}
+
+        <details className="settings-dropdown">
+  <summary>
+    ⚙ Timer Settings
+  </summary>
+
+  <Settings
+    workMinutes={workMinutes}
+    shortBreakMinutes={
+      shortBreakMinutes
+    }
+    longBreakMinutes={
+      longBreakMinutes
+    }
+    setWorkMinutes={
+      setWorkMinutes
+    }
+    setShortBreakMinutes={
+      setShortBreakMinutes
+    }
+    setLongBreakMinutes={
+      setLongBreakMinutes
+    }
+  />
+</details>
       </div>
     </div>
   );
