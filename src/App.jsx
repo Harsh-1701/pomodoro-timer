@@ -1,5 +1,14 @@
 import { useEffect, useRef, useState } from "react";
+
 import "./styles/app.css";
+
+import TimerDisplay from "./components/TimerDisplay";
+import Controls from "./components/Controls";
+import Settings from "./components/Settings";
+import SessionInfo from "./components/SessionInfo";
+
+import BackgroundVideo from "./components/BackgroundVideo";
+import AmbientSound from "./components/AmbientSound";
 
 export default function App() {
   const DEFAULTS = {
@@ -8,14 +17,35 @@ export default function App() {
     longBreak: 15,
   };
 
-  const [workMinutes, setWorkMinutes] = useState(DEFAULTS.work);
-  const [shortBreakMinutes, setShortBreakMinutes] = useState(DEFAULTS.shortBreak);
-  const [longBreakMinutes, setLongBreakMinutes] = useState(DEFAULTS.longBreak);
+  const [workMinutes, setWorkMinutes] =
+    useState(DEFAULTS.work);
 
-  const [sessionType, setSessionType] = useState("Work");
-  const [timeLeft, setTimeLeft] = useState(DEFAULTS.work * 60);
-  const [isRunning, setIsRunning] = useState(false);
-  const [completedWorkSessions, setCompletedWorkSessions] = useState(0);
+  const [
+    shortBreakMinutes,
+    setShortBreakMinutes,
+  ] = useState(DEFAULTS.shortBreak);
+
+  const [
+    longBreakMinutes,
+    setLongBreakMinutes,
+  ] = useState(DEFAULTS.longBreak);
+
+  const [sessionType, setSessionType] =
+    useState("Work");
+
+  const [timeLeft, setTimeLeft] =
+    useState(DEFAULTS.work * 60);
+
+  const [isRunning, setIsRunning] =
+    useState(false);
+
+  const [
+    completedWorkSessions,
+    setCompletedWorkSessions,
+  ] = useState(0);
+
+  const [volume, setVolume] =
+    useState(0.5);
 
   const timerRef = useRef(null);
 
@@ -24,25 +54,32 @@ export default function App() {
       .toString()
       .padStart(2, "0");
 
-    const secs = (seconds % 60).toString().padStart(2, "0");
+    const secs = (seconds % 60)
+      .toString()
+      .padStart(2, "0");
 
     return `${mins}:${secs}`;
   };
 
   const switchSession = () => {
     if (sessionType === "Work") {
-      const updatedCount = completedWorkSessions + 1;
+      const updatedCount =
+        completedWorkSessions + 1;
+
       setCompletedWorkSessions(updatedCount);
 
       if (updatedCount % 4 === 0) {
         setSessionType("Long Break");
+
         setTimeLeft(longBreakMinutes * 60);
       } else {
         setSessionType("Short Break");
+
         setTimeLeft(shortBreakMinutes * 60);
       }
     } else {
       setSessionType("Work");
+
       setTimeLeft(workMinutes * 60);
     }
   };
@@ -53,7 +90,9 @@ export default function App() {
         setTimeLeft((prev) => {
           if (prev <= 1) {
             clearInterval(timerRef.current);
+
             switchSession();
+
             return 0;
           }
 
@@ -62,7 +101,8 @@ export default function App() {
       }, 1000);
     }
 
-    return () => clearInterval(timerRef.current);
+    return () =>
+      clearInterval(timerRef.current);
   }, [isRunning, sessionType]);
 
   const startTimer = () => {
@@ -71,62 +111,86 @@ export default function App() {
 
   const stopTimer = () => {
     setIsRunning(false);
+
     clearInterval(timerRef.current);
   };
 
   const resetTimer = () => {
     stopTimer();
+
     setSessionType("Work");
+
     setCompletedWorkSessions(0);
+
     setTimeLeft(workMinutes * 60);
   };
 
   return (
     <div className="app-container">
+      <BackgroundVideo />
+
+      <AmbientSound volume={volume} />
+
+      <div className="background-overlay"></div>
+
       <div className="timer-card">
         <h1>Pomodoro Timer</h1>
 
-        <h2>{sessionType}</h2>
+        <SessionInfo
+          sessionType={sessionType}
+          completedWorkSessions={
+            completedWorkSessions
+          }
+        />
 
-        <div className="timer-text">
-          {formatTime(timeLeft)}
-        </div>
+        <TimerDisplay
+          time={formatTime(timeLeft)}
+        />
 
-        <p>Completed Sessions: {completedWorkSessions}</p>
+        <Controls
+          isRunning={isRunning}
+          startTimer={startTimer}
+          stopTimer={stopTimer}
+          resetTimer={resetTimer}
+        />
 
-        <div className="button-group">
-          <button onClick={startTimer}>Start</button>
+        <div className="volume-control">
+          <label>
+            Ambient Volume
+          </label>
 
-          <button onClick={stopTimer}>Stop</button>
-
-          <button onClick={resetTimer}>Reset</button>
-        </div>
-
-        <div className="settings">
-          <label>Work Minutes</label>
           <input
-            type="number"
-            value={workMinutes}
-            onChange={(e) => setWorkMinutes(Number(e.target.value))}
-            style={{ width: "100%", marginBottom: "10px" }}
-          />
-
-          <label>Short Break</label>
-          <input
-            type="number"
-            value={shortBreakMinutes}
-            onChange={(e) => setShortBreakMinutes(Number(e.target.value))}
-            style={{ width: "100%", marginBottom: "10px" }}
-          />
-
-          <label>Long Break</label>
-          <input
-            type="number"
-            value={longBreakMinutes}
-            onChange={(e) => setLongBreakMinutes(Number(e.target.value))}
-            style={{ width: "100%" }}
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={volume}
+            onChange={(e) =>
+              setVolume(
+                Number(e.target.value)
+              )
+            }
           />
         </div>
+
+        <Settings
+          workMinutes={workMinutes}
+          shortBreakMinutes={
+            shortBreakMinutes
+          }
+          longBreakMinutes={
+            longBreakMinutes
+          }
+          setWorkMinutes={
+            setWorkMinutes
+          }
+          setShortBreakMinutes={
+            setShortBreakMinutes
+          }
+          setLongBreakMinutes={
+            setLongBreakMinutes
+          }
+        />
       </div>
     </div>
   );
