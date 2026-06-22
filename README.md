@@ -2,6 +2,8 @@
 
 A responsive Pomodoro Timer built using React and Vite.
 
+https://roadmap.sh/projects/pomodoro-timer
+
 ## Features
 
 - Start, stop and reset timer
@@ -24,6 +26,8 @@ A responsive Pomodoro Timer built using React and Vite.
 - Local storage support
 - Dark mode
 - Deployment
+
+
 
 ## Author
 
